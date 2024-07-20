@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keuangan Pribadi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+            background: linear-gradient(45deg, #005f73, #0a9396);
+            animation: backgroundAnimation 10s infinite alternate;
+        }
+        @keyframes backgroundAnimation {
+            0% { background: linear-gradient(45deg, #005f73, #0a9396); }
+            100% { background: linear-gradient(45deg, #0a9396, #005f73); }
+        }
+        .container {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-container i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #007bff;
+            font-size: 1.2em;
+        }
+        input[type="text"], input[type="password"], input[type="number"] {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .error {
+            color: #dc3545;
+            margin-top: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+        .reset-btn {
+            background-color: #dc3545;
+            margin-top: 20px;
+        }
+        .reset-btn:hover {
+            background-color: #c82333;
+        }
+        .print-excel-buttons {
+            margin-top: 20px;
+        }
+        .print-excel-buttons button {
+            background-color: #28a745;
+            margin-right: 10px;
+        }
+        .print-excel-buttons button:hover {
+            background-color: #218838;
+        }
+        .main-container {
+            opacity: 0;
+            transform: scale(0.9);
+            animation: slideIn 1s forwards;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            color: #007bff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .section i {
+            margin-right: 10px;
+            color: #007bff;
+        }
+        .total {
+            margin-top: 20px;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #007bff;
+        }
+        .tables-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .table-container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.05); /* Transparan background */
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        td {
+            background-color: #ffffff;
+            font-family: 'Roboto Mono', monospace;
+        }
+        td.amount {
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 500;
+        }
+        #chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+        #chatbot.minimized {
+            transform: translateY(100%);
+        }
+        #chatbot-header {
+            background: #007bff;
+            color: #ffffff;
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+        }
+        #chatbot-header button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        #chatbot-body {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        #chatbot-footer {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+        #chatbot-footer input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            font-size: 0.9em;
+            box-sizing: border-box;
+        }
+        #chatbot-footer button {
+            border: none;
+            background: #007bff;
+            color: #ffffff;
+            padding: 10px;
+            cursor: pointer;
+        }
+        #chatbot-footer button:hover {
+            background: #0056b3;
+        }
+        #open-chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: #ffffff;
+            font-size: 1.5em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        #open-chatbot i {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="login-container">
+        <h1><i class="fas fa-user-lock"></i> Login</h1>
+        <div class="input-container">
+            <i class="fas fa-user"></i>
+            <input type="text" id="username" placeholder="Username">
+        </div>
+        <div class="input-container">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" placeholder="Password">
+        </div>
+        <button onclick="login()">Login</button>
+        <div id="error-message" class="error hidden"></div>
+    </div>
+
+    <div class="main-container hidden" id="main-container">
+        <div class="section">
+            <button onclick="toggleView('income')">Tabungan</button>
+            <button onclick="toggleView('expense')">Pengeluaran</button>
+            <button onclick="showSavingsList()">Daftar Tabungan</button>
+        </div>
+
+        <div class="tables-container">
+            <div class="table-container hidden" id="income-table">
+                <h2><i class="fas fa-money-bill-wave"></i> Tambah Tabungan</h2>
+                <input type="number" id="income-amount" placeholder="Jumlah Tabungan">
+                <button onclick="addIncome()">Tambah Tabungan</button>
+                <div class="total">Total Tabungan: <span id="total-income">0</span></div>
+                <table id="income-list">
+                    <thead>
+                        <tr>
+                            <th>Jumlah</th>
+                            <th>Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="table-container hidden" id="expense-table">
+                <h2><i class="fas fa-credit-card"></i> Tambah Pengeluaran</h2>
+                <input type="number" id="expense-amount" placeholder="Jumlah Pengeluaran">
+                <button onclick="addExpense()">Tambah Pengeluaran</button>
+                <div class="total">Total Pengeluaran: <span id="total-expenses">0</span></div>
+                <table id="expense-list">
+                    <thead>
+                        <tr>
+                            <th>Jumlah</th>
+                            <th>Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="table-container hidden" id="savings-list">
+                <h2><i class="fas fa-list"></i> Daftar Tabungan</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Jumlah</th>
+                            <th>Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="savings-list-body"></tbody>
+                </table>
+                <div class="total">
+                    Total Keseluruhan: <span id="total-balance">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="print-excel-buttons">
+            <button onclick="printPage()">Print</button>
+            <button onclick="exportToExcel()">Export to Excel</button>
+        </div>
+
+        <button class="reset-btn" onclick="resetData()">Reset Data</button>
+    </div>
+
+    <div id="chatbot">
+        <div id="chatbot-header">
+            Asisten Keuangan
+            <button onclick="minimizeChatbot()">-</button>
+            <button onclick="closeChatbot()">×</button>
+        </div>
+        <div id="chatbot-body">
+            <p><strong>Asisten:</strong> Halo! Saya di sini untuk membantu Anda dengan keuangan pribadi Anda. Silakan tanyakan sesuatu!</p>
+        </div>
+        <div id="chatbot-footer">
+            <input type="text" id="chat-input" placeholder="Ketik pesan...">
+            <button onclick="sendChat()">Kirim</button>
+        </div>
+    </div>
+
+    <div id="open-chatbot" onclick="openChatbot()">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <audio id="notification-sound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        const USERNAME = 'Admin';
+        const PASSWORD = 'dicky2003';
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            if (username === USERNAME && password === PASSWORD) {
+                document.getElementById('login-container').classList.add('hidden');
+                document.getElementById('main-container').classList.remove('hidden');
+                displayTransactions();
+                calculateTotals();
+                toggleView('income'); // Default to show income table
+            } else {
+                errorMessage.textContent = 'Username atau Password salah.';
+                errorMessage.classList.remove('hidden');
+            }
+        }
+
+        function formatRupiah(amount) {
+            return amount.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+        }
+
+        function playNotificationSound() {
+            const audio = document.getElementById('notification-sound');
+            if (audio) {
+                audio.play().catch(e => {
+                    alert('Gagal memutar suara notifikasi.');
+                });
+            }
+        }
+
+        function addIncome() {
+            const amountInput = document.getElementById('income-amount');
+            const amount = parseFloat(amountInput.value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('Masukkan jumlah tabungan yang valid.');
+                return;
+            }
+
+            let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            transactions.push({ type: 'income', amount, date: new Date().toLocaleDateString() });
+
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+            displayTransactions();
+            calculateTotals();
+            playNotificationSound();
+            amountInput.value = '';
+        }
+
+        function addExpense() {
+            const amountInput = document.getElementById('expense-amount');
+            const amount = parseFloat(amountInput.value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('Masukkan jumlah pengeluaran yang valid.');
+                return;
+            }
+
+            let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            transactions.push({ type: 'expense', amount, date: new Date().toLocaleDateString() });
+
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+            displayTransactions();
+            calculateTotals();
+            playNotificationSound();
+            amountInput.value = '';
+        }
+
+        function displayTransactions() {
+            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            const incomeList = document.getElementById('income-list').getElementsByTagName('tbody')[0];
+            const expenseList = document.getElementById('expense-list').getElementsByTagName('tbody')[0];
+            const savingsListBody = document.getElementById('savings-list-body');
+
+            incomeList.innerHTML = '';
+            expenseList.innerHTML = '';
+            savingsListBody.innerHTML = '';
+
+            transactions.forEach(transaction => {
+                const row = document.createElement('tr');
+                const amountCell = document.createElement('td');
+                const dateCell = document.createElement('td');
+
+                amountCell.textContent = formatRupiah(transaction.amount);
+                amountCell.classList.add('amount');
+                dateCell.textContent = transaction.date;
+
+                row.appendChild(amountCell);
+                row.appendChild(dateCell);
+
+                if (transaction.type === 'income') {
+                    incomeList.appendChild(row);
+                    savingsListBody.appendChild(row.cloneNode(true));
+                } else if (transaction.type === 'expense') {
+                    expenseList.appendChild(row);
+                }
+            });
+        }
+
+        function calculateTotals() {
+            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            const totalIncome = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+            const totalExpenses = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+            const totalBalance = totalIncome - totalExpenses;
+
+            document.getElementById('total-income').textContent = formatRupiah(totalIncome);
+            document.getElementById('total-expenses').textContent = formatRupiah(totalExpenses);
+            document.getElementById('total-balance').textContent = formatRupiah(totalBalance);
+        }
+
+        function resetData() {
+            if (confirm('Apakah Anda yakin ingin mereset semua data?')) {
+                localStorage.removeItem('transactions');
+                displayTransactions();
+                calculateTotals();
+                playNotificationSound();
+            }
+        }
+
+        function toggleView(view) {
+            const incomeTable = document.getElementById('income-table');
+            const expenseTable = document.getElementById('expense-table');
+            const savingsList = document.getElementById('savings-list');
+
+            if (view === 'income') {
+                incomeTable.classList.remove('hidden');
+                expenseTable.classList.add('hidden');
+                savingsList.classList.add('hidden');
+            } else if (view === 'expense') {
+                incomeTable.classList.add('hidden');
+                expenseTable.classList.remove('hidden');
+                savingsList.classList.add('hidden');
+            }
+        }
+
+        function showSavingsList() {
+            const incomeTable = document.getElementById('income-table');
+            const expenseTable = document.getElementById('expense-table');
+            const savingsList = document.getElementById('savings-list');
+
+            incomeTable.classList.add('hidden');
+            expenseTable.classList.add('hidden');
+            savingsList.classList.remove('hidden');
+        }
+
+        function printPage() {
+            window.print();
+        }
+
+        function exportToExcel() {
+            const wb = XLSX.utils.book_new();
+            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            const ws = XLSX.utils.json_to_sheet(transactions);
+
+            XLSX.utils.book_append_sheet(wb, ws, "Data Keuangan");
+            XLSX.writeFile(wb, "Keuangan.xlsx");
+        }
+
+        function openChatbot() {
+            document.getElementById('chatbot').style.display = 'flex';
+        }
+
+        function minimizeChatbot() {
+            document.getElementById('chatbot').classList.toggle('minimized');
+        }
+
+        function closeChatbot() {
+            document.getElementById('chatbot').style.display = 'none';
+        }
+
+        function sendChat() {
+            const input = document.getElementById('chat-input');
+            const message = input.value;
+            const chatBody = document.getElementById('chatbot-body');
+
+            if (!message.trim()) return;
+
+            const userMessage = document.createElement('p');
+            userMessage.innerHTML = `<strong>Anda:</strong> ${message}`;
+            chatBody.appendChild(userMessage);
+
+            const botMessage = document.createElement('p');
+            botMessage.innerHTML = `<strong>Asisten:</strong> ${getBotResponse(message)}`;
+            chatBody.appendChild(botMessage);
+
+            input.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function getBotResponse(message) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            const totalBalance = JSON.parse(localStorage.getItem('transactions'))?.reduce((sum, t) => {
+                if (t.type === 'income') return sum + t.amount;
+                if (t.type === 'expense') return sum - t.amount;
+                return sum;
+            }, 0) || 0;
+
+            if (message.toLowerCase().includes('jam')) {
+                return `Sekarang pukul ${timeString}.`;
+            } else if (message.toLowerCase().includes('sisa keuangan')) {
+                return `Sisa keuangan Anda adalah ${formatRupiah(totalBalance)}.`;
+            } else if (message.toLowerCase().includes('pengeluaran') || message.toLowerCase().includes('pemasukan')) {
+                const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+                const type = message.toLowerCase().includes('pengeluaran') ? 'expense' : 'income';
+                const amount = transactions.filter(t => t.type === type).reduce((sum, t) => sum + t.amount, 0);
+                return `Total ${type === 'expense' ? 'pengeluaran' : 'pemasukan'} Anda adalah ${formatRupiah(amount)}.`;
+            } else {
+                return 'Maaf, saya tidak mengerti pertanyaan Anda.';
+            }
+        }
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot dengan YouTube</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #open-chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        #open-chatbot i {
+            font-size: 24px;
+        }
+        #chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        #chatbot-header {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #chatbot-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        #chatbot-footer {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+        #chatbot-footer input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        #chatbot-footer button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        #chatbot-footer button:hover {
+            background-color: #0056b3;
+        }
+        #chatbot-minimize {
+            cursor: pointer;
+        }
+        #chatbot-close {
+            cursor: pointer;
+        }
+        #youtube-frame {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 320px; /* Width of the YouTube frame */
+            height: 180px; /* Height of the YouTube frame */
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 999;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chatbot -->
+    <div id="chatbot">
+        <div id="chatbot-header">
+            <span>Chatbot</span>
+            <div>
+                <span id="chatbot-minimize" onclick="minimizeChatbot()">-</span>
+                <span id="chatbot-close" onclick="closeChatbot()">X</span>
+            </div>
+        </div>
+        <div id="chatbot-body"></div>
+        <div id="chatbot-footer">
+            <input type="text" id="chat-input" placeholder="Ketik pesan...">
+            <button onclick="sendChat()">Kirim</button>
+        </div>
+    </div>
+
+    <!-- Open Chatbot Button -->
+    <div id="open-chatbot" onclick="openChatbot()">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <!-- YouTube Frame -->
+    <iframe id="youtube-frame" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    <script>
+        const neckDeepVideoLink = 'https://www.youtube.com/embed/VyPwEZTIpVc?si=gS6OfqquGXuDYL9q';  // Video Neck Deep "Wish You Were Here"
+
+        function openChatbot() {
+            document.getElementById('chatbot').style.display = 'flex';
+            document.getElementById('open-chatbot').style.display = 'none';
+        }
+
+        function closeChatbot() {
+            document.getElementById('chatbot').style.display = 'none';
+            document.getElementById('open-chatbot').style.display = 'block';
+        }
+
+        function minimizeChatbot() {
+            const chatbotBody = document.getElementById('chatbot-body');
+            const chatbotFooter = document.getElementById('chatbot-footer');
+            if (chatbotBody.style.display === 'none') {
+                chatbotBody.style.display = 'block';
+                chatbotFooter.style.display = 'flex';
+            } else {
+                chatbotBody.style.display = 'none';
+                chatbotFooter.style.display = 'none';
+            }
+        }
+
+        function sendChat() {
+            const input = document.getElementById('chat-input').value.toLowerCase();
+            const chatbotBody = document.getElementById('chatbot-body');
+            const userMessage = document.createElement('div');
+            userMessage.textContent = input;
+            userMessage.style.textAlign = 'right';
+            chatbotBody.appendChild(userMessage);
+
+            let botMessage = '';
+            if (input.includes('buka youtube')) {
+                botMessage = 'Menampilkan video Neck Deep - "Wish You Were Here"...';
+                playNeckDeepVideo();
+            } else {
+                botMessage = 'Perintah tidak dikenal.';
+            }
+
+            const botResponse = document.createElement('div');
+            botResponse.textContent = botMessage;
+            chatbotBody.appendChild(botResponse);
+            document.getElementById('chat-input').value = '';
+        }
+
+        function playNeckDeepVideo() {
+            const youtubeFrame = document.getElementById('youtube-frame');
+            youtubeFrame.src = neckDeepVideoLink;
+            youtubeFrame.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

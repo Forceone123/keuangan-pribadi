@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotspot Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f5;
+            color: #333;
+            text-align: center;
+        }
+
+        .header {
+            background-color: #0039a6;
+            color: white;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .marquee {
+            width: calc(100% - 40px); /* Menyesuaikan lebar marquee dengan ruang ikon */
+            white-space: nowrap;
+            overflow: hidden;
+            box-sizing: border-box;
+            padding-left: 10px;
+        }
+
+        .marquee span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 15s linear infinite;
+            font-size: 14px; /* Ukuran font lebih kecil */
+            line-height: 1.5;
+        }
+
+        @keyframes marquee {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        .content {
+            margin-top: 60px;
+            padding: 20px;
+        }
+
+        .button {
+            background-color: #0039a6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #002a7d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span class="icon"><i class="fas fa-wifi"></i></span>
+        <div class="marquee">
+            <span>Selamat datang di Dicky Hotspot Wifi🙏 selamat berbelanja!! Pilih paket yang sesuai kamu inginkan ya....!!! TERIMAKASIH 😉</span>
+        </div>
+    </div>
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login Hotspot</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <style>
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            @keyframes cloudMove {
+                from { transform: translateX(-100%); }
+                to { transform: translateX(100%); }
+            }
+
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background: linear-gradient(to right, #2193b0, #6dd5ed);
+                margin: 0;
+                font-family: Arial, sans-serif;
+                animation: fadeIn 1s;
+            }
+
+            .container {
+                text-align: center;
+                padding: 20px;
+                border-radius: 10px;
+                background-color: #ffffff;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease;
+                background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+            }
+
+            .container h1 {
+                margin-bottom: 20px;
+                font-size: 24px;
+                color: #333;
+            }
+
+            .container input {
+                padding: 10px;
+                width: 80%;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .container button {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s, transform 0.3s;
+            }
+
+            .container button:hover {
+                background-color: #0056b3;
+                transform: translateY(-2px);
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .packages h2 {
+                margin-bottom: 20px;
+                font-size: 20px;
+                color: #333;
+            }
+
+            .packages ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+            .packages ul li {
+                padding: 10px;
+                border: 2px solid #007bff;
+                border-radius: 10px;
+                margin-bottom: 10px;
+                background-color: #e3f2fd;
+                transition: transform 0.2s, box-shadow 0.2s;
+                cursor: pointer;
+            }
+
+            .packages ul li:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            .time {
+                margin-top: 20px;
+                font-size: 20px;
+                font-weight: bold;
+                color: #333;
+            }
+
+            .whatsapp {
+                margin-top: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #25d366;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+            .whatsapp i {
+                font-size: 24px;
+                margin-right: 8px;
+            }
+
+            .sun, .moon {
+                font-size: 50px;
+                display: none;
+                margin-top: 10px;
+            }
+
+            .clouds {
+                position: absolute;
+                top: 20px;
+                width: 100%;
+                height: 100px;
+                overflow: hidden;
+                z-index: -1;
+            }
+
+            .cloud {
+                position: absolute;
+                top: 0;
+                width: 200px;
+                height: 100px;
+                background: rgba(255, 255, 255, 0.8);
+                border-radius: 100px;
+                animation: cloudMove 20s linear infinite;
+            }
+
+            .cloud.one {
+                left: -200px;
+                animation-delay: 0s;
+            }
+
+            .cloud.two {
+                left: -400px;
+                animation-delay: 10s;
+            }
+
+            .visible {
+                display: inline-block !important;
+            }
+
+            .footer {
+                margin-top: 20px;
+                font-size: 14px;
+                color: #777;
+            }
+
+            @keyframes slideIn {
+                from {
+                    transform: translateY(100px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            .packages {
+                animation: slideIn 0.5s ease-out;
+            }
+
+            .notification {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: #007bff;
+                color: white;
+                padding: 15px;
+                border-radius: 5px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                display: none;
+                font-size: 16px;
+            }
+
+            .notification.visible {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <audio id="clickSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
+        <div class="clouds">
+            <div class="cloud one"></div>
+            <div class="cloud two"></div>
+        </div>
+        <div class="container form-container">
+            <h1>Masukkan Nama Pengguna</h1>
+            <form id="usernameForm">
+                <input type="text" name="username" placeholder="Nama Pengguna" required>
+                <button type="submit">Kirim</button>
+            </form>
+        </div>
+        <div class="container packages hidden">
+            <h1>Selamat Datang, <span id="username"></span></h1>
+            <h2>Pilih Paket Anda</h2>
+            <ul>
+                <li onclick="selectPackage('Paket 4 Bulan - Rp. 250.000')">Paket 4 Bulan - Rp. 250.000</li>
+                <li onclick="selectPackage('Paket 2 Bulan - Rp. 120.000')">Paket 2 Bulan - Rp. 120.000</li>
+                <li onclick="selectPackage('Paket 1 Bulan - Rp. 52.000')">Paket 1 Bulan - Rp. 52.000</li>
+                <li onclick="selectPackage('Paket 7 Hari - Rp. 30.000')">Paket 7 Hari - Rp. 30.000</li>
+                <li onclick="selectPackage('Paket 3 Hari - Rp. 15.000')">Paket 3 Hari - Rp. 15.000</li>
+                <li onclick="selectPackage('Paket 1 Hari - Rp. 7.000')">Paket 1 Hari - Rp. 7.000</li>
+            </ul>
+            <div class="time" id="time"></div>
+            <div class="sun" id="sun">☀️</div>
+            <div class="moon" id="moon">🌙</div>
+            <div class="whatsapp">
+                <a id="whatsappLink" href="#" target="_blank">
+                    <i class="fab fa-whatsapp"></i>Hubungi Admin via WhatsApp
+                </a>
+            </div>
+            <div class="footer">
+                &copy; 2024 Layanan Hotspot
+            </div>
+        </div>
+        <div id="notification" class="notification"></div>
+        <script>
+            document.getElementById('usernameForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const username = event.target.username.value;
+                document.getElementById('username').textContent = username;
+                document.querySelector('.form-container').classList.add('hidden');
+                document.querySelector('.packages').classList.remove('hidden');
+                updateTime();
+            });
+
+            function updateTime() {
+                const timeElement = document.getElementById('time');
+                const sun = document.getElementById('sun');
+                const moon = document.getElementById('moon');
+                const now = new Date();
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                const seconds = now.getSeconds();
+                const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                timeElement.textContent = formattedTime;
+
+                if (hours >= 6 && hours < 18) {
+                    sun.classList.add('visible');
+                    moon.classList.remove('visible');
+                } else {
+                    sun.classList.remove('visible');
+                    moon.classList.add('visible');
+                }
+            }
+
+            function selectPackage(packageName) {
+                const username = document.getElementById('username').textContent;
+                const whatsappLink = `https://wa.me/085607454606?text=Halo!!!%20Saya%20${encodeURIComponent(username)}%20saya%20membeli%20${encodeURIComponent(packageName)}%2C%20selanjutnya%20instruksi%20pembayaran.`;
+                playSound();
+                showNotification(username, packageName);
+                window.open(whatsappLink, '_blank');
+            }
+
+            function playSound() {
+                const sound = document.getElementById('clickSound');
+                sound.play();
+            }
+
+            function showNotification(username, packageName) {
+                const notification = document.getElementById('notification');
+                notification.textContent = `Selamat ${username}, paket Anda (${packageName}) telah diaktifkan.`;
+                notification.classList.add('visible');
+                setTimeout(() => {
+                    notification.classList.remove('visible');
+                }, 5000);
+            }
+
+            setInterval(updateTime, 1000);
+        </script>
+    </body>
+    </html>
+
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login Hotspot</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <style>
+            /* CSS styles here */
+        </style>
+    </head>
+    <body>
+        <audio id="clickSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
+        <!-- HTML content here -->
+        <script>
+            document.getElementById('usernameForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const username = event.target.username.value;
+                document.getElementById('username').textContent = username;
+                document.querySelector('.form-container').classList.add('hidden');
+                document.querySelector('.packages').classList.remove('hidden');
+                updateTime();
+            });
+
+            function updateTime() {
+                const timeElement = document.getElementById('time');
+                const sun = document.getElementById('sun');
+                const moon = document.getElementById('moon');
+                const now = new Date();
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                const seconds = now.getSeconds();
+                const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                timeElement.textContent = formattedTime;
+
+                if (hours >= 6 && hours < 18) {
+                    sun.classList.add('visible');
+                    moon.classList.remove('visible');
+                } else {
+                    sun.classList.remove('visible');
+                    moon.classList.add('visible');
+                }
+            }
+
+            function selectPackage(packageName) {
+                const username = document.getElementById('username').textContent;
+                const whatsappNumber = '6285607454606'; // Format internasional
+                const whatsappLink = `https://wa.me/${whatsappNumber}?text=Halo!!!%20Saya%20${encodeURIComponent(username)}%20saya%20membeli%20${encodeURIComponent(packageName)}%2C%20selanjutnya%20instruksi%20pembayaran.`;
+                playSound();
+                showNotification(username, packageName);
+                window.open(whatsappLink, '_blank');
+            }
+
+            function playSound() {
+                const sound = document.getElementById('clickSound');
+                sound.play();
+            }
+
+            function showNotification(username, packageName) {
+                const notification = document.getElementById('notification');
+                notification.textContent = `Selamat ${username}, paket Anda (${packageName}) telah diaktifkan.`;
+                notification.classList.add('visible');
+                setTimeout(() => {
+                    notification.classList.remove('visible');
+                }, 5000);
+            }
+
+            setInterval(updateTime, 1000);
+        </script>
+    </body>
+    </html>
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Hotspot Login</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f0f0f5;
+                color: #333;
+                text-align: center;
+            }
+
+            .header {
+                background-color: #0039a6;
+                color: white;
+                padding: 10px;
+                position: fixed;
+                width: 100%;
+                top: 0;
+                left: 0;
+                z-index: 1000;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+            }
+
+            .icon {
+                font-size: 20px;
+                margin-right: 10px;
+            }
+
+            .marquee {
+                width: calc(100% - 40px); /* Menyesuaikan lebar marquee dengan ruang ikon */
+                white-space: nowrap;
+                overflow: hidden;
+                box-sizing: border-box;
+                padding-left: 10px;
+            }
+
+            .marquee span {
+                display: inline-block;
+                padding-left: 100%;
+                animation: marquee 15s linear infinite;
+                font-size: 14px; /* Ukuran font lebih kecil */
+                line-height: 1.5;
+            }
+
+            @keyframes marquee {
+                from {
+                    transform: translateX(100%);
+                }
+                to {
+                    transform: translateX(-100%);
+                }
+            }
+
+            .content {
+                margin-top: 60px;
+                padding: 20px;
+            }
+
+            .button {
+                background-color: #0039a6;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 20px;
+                cursor: pointer;
+                text-decoration: none;
+                font-size: 16px;
+                transition: background-color 0.3s;
+            }
+
+            .button:hover {
+                background-color: #002a7d;
+            }
+
+            .welcome-message {
+                display: none;
+                padding: 20px;
+                background-color: #d4edda;
+                color: #155724;
+                border-radius: 5px;
+                margin: 20px auto;
+                max-width: 600px;
+                font-size: 18px;
+                animation: fadeIn 2s ease-out;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <span class="icon"><i class="fas fa-wifi"></i></span>
+            <div class="marquee">
+                <span>Selamat datang di Dicky Hotspot Wifi🙏 selamat berbelanja!! Pilih paket yang sesuai kamu inginkan ya....!!! TERIMAKASIH 😉</span>
+            </div>
+        </div>
+
